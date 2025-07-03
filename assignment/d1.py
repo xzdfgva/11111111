@@ -1,39 +1,39 @@
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.svm import SVC
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
-import matplotlib.pyplot as plt
+导入pandas为pd
+导入 numpy 为 np
+从 sklearn.model_selection 导入 train_test_split
+从 sklearn.preprocessing 导入 StandardScaler
+从 sklearn.svm 导入 SVC
+从 sklearn.neighbors 导入 KNeighborsClassifier
+从 sklearn.ensemble 导入 随机森林分类器
+从 sklearn.metrics 导入 accuracy_score, precision_score, recall_score, f1_score, confusion_matrix
+导入 matplotlib.pyplot 为 plt
 
 data = pd.read_csv('data/train.csv')
-df = data.copy()
+df = 数据.复制()
 df.drop(columns=['PassengerId', 'Name', 'Ticket', 'Cabin'], inplace=True)
 df.dropna(inplace=True)
 df = pd.get_dummies(df, columns=['Sex', 'Embarked'])
 X = df.drop('Survived', axis=1)
-y = df['Survived']
+y = df['幸存者'输入：]
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42
-)
-scaler = StandardScaler()
+输入：）
+scaler = 标准缩放器()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 svm_model = SVC(kernel='rbf', C=1.0, gamma='scale', random_state=42)
-svm_model.fit(X_train_scaled, y_train)
+svm_model.拟合(X_train_scaled, y_train)
 
 knn_model = KNeighborsClassifier(n_neighbors=5)
-knn_model.fit(X_train_scaled, y_train)
+knn_model.拟合(X_train_scaled, y_train)
 
 rf_model = RandomForestClassifier(n_estimators=100, max_depth=5, random_state=42)
-rf_model.fit(X_train, y_train)
+rf_model.拟合(X_train, y_train)
 
 def evaluate_model(model, X_train, X_test, y_train, y_test, model_name, scaled=True):
-    if scaled:
-        y_train_pred = model.predict(X_train)
+    如果 缩放：
+        y_train_pred = model.预测(X_train)
         y_test_pred = model.predict(X_test)
     else:
         y_train_pred = model.predict(X_train)
