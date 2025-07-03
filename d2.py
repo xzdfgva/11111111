@@ -1,41 +1,39 @@
-导入torch
-导入 torch.nn 作为 nnas nn
-导入 torch.optim 为 优化器为 optim
-导入torchvision
-导入torchvision. transforms  作为 transformsas transforms
-从 torch.utils.data 导入 DataLoader
-导入 matplotlib.pyplot 作为 pltas plt
-导入numpy库并命名为npas np
+import torch
+import torch.nn as nn
+import torch.optim as optim
+import torchvision
+import torchvision.transforms as transforms
+from torch.utils.data import DataLoader
+import matplotlib.pyplot as plt
+import numpy as np
 
 # 检查GPU可用性
-设备 = torch.device("cuda" if torch.cuda.is_available() else "cpu")device("cuda" if torch.cuda.is_available() else "cpu")
-打印(f"使用设备: {打印(f"使用设备: {设备}")}")
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print(f"Using device: {device}")
 
 # %% 1. 加载并检查数据
-训练数据集 = torchvision.datasets.CIFAR10(datasets.CIFAR10(
-    root='./data''./data', 
-    训练 = 真,真,
-    下载 = 真真
-输入：）
-测试数据集 = torchvision.datasets.CIFAR10(datasets.CIFAR10(
-    root='./data''./data', 
-    train=否,否,
-    下载 = 真真
-输入：）
+train_dataset = torchvision.datasets.CIFAR10(
+    root='./data', 
+    train=True,
+    download=True
+)
+test_dataset = torchvision.datasets.CIFAR10(
+    root='./data', 
+    train=False,
+    download=True
+)
 
 # 检查数据维度
-打印  
-打印(f"测试集图像形状: {打印(f"测试集图像形状: {test_dataset.data.shape}")   # (10000, 32, 32, 3)data.shape}")   # (10000, 32, 32, 3)
-打印(f"类别标签: {打印(f"类别标签: {train_dataset.classes}")  # 10个类别classes}")  # 10个类别
+print(f"训练集图像形状: {train_dataset.data.shape}")  # (50000, 32, 32, 3)
+print(f"测试集图像形状: {test_dataset.data.shape}")   # (10000, 32, 32, 3)
+print(f"类别标签: {train_dataset.classes}")  # 10个类别
 
 # 可视化样本图像
-defdef show_images(dataset, num_samples=6):
-
-显示图像(dataset, num_samples=6):
+def show_images(dataset, num_samples=6):
     fig, axes = plt.subplots(1, num_samples, figsize=(12, 3))
-    对于 i 在范围内的样本数量：对于 i 在范围内的样本数量：
-        img, label = dataset[i][i]
-        axes[i].imshow(img)[i].imshow(img)
+    for i in range(num_samples):
+        img, label = dataset[i]
+        axes[i].imshow(img)
         axes[i].set_title(dataset.classes[label])
         axes[i].axis('off')
     plt.show()
